@@ -7,7 +7,7 @@ var sql = require('mssql');
 var connection = (0, mysql2_1.createConnection)({
     host: "localhost",
     user: "root",
-    database: "AdventureWorks2017",
+    database: "adventureworks",
     password: ""
 });
 exports.connection = connection;

@@ -8,3 +8,4 @@
 -- Listar el total de ordenes hechas por cada representante de ventas
 -- Agregar el producto "HL Road Frame - Black, 58" a la oferta "Descuento por volumen 11 a 14"
 --La suma de total de venta por PersonID
+--Tienda con mas ventas realizadas por tarjeta de credito
