@@ -2,21 +2,21 @@ import { createConnection } from "mysql2";
 const sql = require('mssql')
 
 // create the connection to database in MYSQL
-const connection = createConnection(
+/*const connection = createConnection(
 	{
 		host: "localhost",
 		user: "root",
-		database: "AdventureWorks2019",
-		password: "Yuval1302",	
+		database: "AdventureWorks2017",
+		password: "",	
 	}
-);
+);*/
 
 // create the connection to database in SQL Server
 const sqlConfig = {
 	user: 'sa',
-  	password: 'Yuval1302',
-	database: 'AdventureWorks2019',
-	server: 'localhost\\MSSQLSERVER1',
+  	password: 'Datos2021',
+	database: 'AdventureWorks2017',
+	server: 'localhost\\CLASEBASEDEDATOS',
 	pool: {
 	  max: 10,
 	  min: 0,

@@ -39,7 +39,7 @@ exports.__esModule = true;
 var users_dao_1 = require("./users.dao");
 /* import { readline } from 'readline' */
 var fn = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var db, users, user, defunciones;
+    var db, users, defunciones;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -48,12 +48,8 @@ var fn = function () { return __awaiter(void 0, void 0, void 0, function () {
             case 1:
                 users = _a.sent();
                 console.log(users);
-                return [4 /*yield*/, db.getSale(users[1].Name)];
-            case 2:
-                user = _a.sent();
-                console.log(user);
                 return [4 /*yield*/, db.getSalesSQL()];
-            case 3:
+            case 2:
                 defunciones = _a.sent();
                 console.log(defunciones);
                 return [2 /*return*/];
