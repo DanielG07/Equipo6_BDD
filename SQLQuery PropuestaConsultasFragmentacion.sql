@@ -1,13 +1,47 @@
 -- PROPUESTA DE CONSULTAS PARA MODELO DE FRAGMENTACION DEL SEGMENTO VENTAS
 
 -- Listar el numero de ventas por territorio
+select TerritoryID, count(*) as 'Num. Ventas'
+from Sales.SalesOrderHeader
+group by TerritoryID
+order by TerritoryID ASC
+
 -- Listar el numero de ventas por tienda 
+select SalesPersonID, count(*) as 'Num. Ventas' 
+from Sales.SalesOrderHeader
+group by SalesPersonID
+
 -- Listar el total de clientes que pertenecen a cada territorio
+select TerritoryID, count(*) as 'Total_CLientes' 
+from Sales.Customer 
+where PersonID is not null
+group by TerritoryID
+order by TerritoryID asc
+
 -- Actualizar la oferta de llantas de monta�a con un descuento del 40%
+update Sales.SpecialOffer
+set DiscountPct = 0.40
+where SpecialOfferID = 10
+
 -- Listar las ordenes realizadas debidas a anuncio de revista
+select * 
+from Sales.SalesOrderHeaderSalesReason 
+where SalesReasonID = 4
+
 -- Listar el total de ordenes hechas por cada representante de ventas
+select SalesPersonID, count(*) as 'Num. ordenes' 
+from Sales.SalesOrderHeader 
+group by SalesPersonID
+
 -- Agregar el producto "HL Road Frame - Black, 58" a la oferta "Descuento por volumen 11 a 14"
+insert into Sales.SpecialOfferProduct(SpecialOfferID,ProductID,rowguid,ModifiedDate) 
+values (2,722,'asdfgh12345','2021-11-01 00:00:00.000') 
+
 --La suma de total de venta por PersonID
+select SalesPersonID, sum(TotalDue) as 'Total_Ventas'
+from Sales.SalesOrderHeader 
+group by SalesPersonID 
+order by SalesPersonID asc
 
 --Listar el producto más vendido por cada categoría 
 DECLARE @i INT = 1;
