@@ -23,6 +23,8 @@ P17 => SalesPersonID =  290
 
 -- Consulta 3 -- 
 -- Listar el total de clientes que pertenecen a cada territorio
+Tabla origen: Sales.SalesTerritory
+Tabla aplicable: Sales.Customer
 
 Se pueden omitir ya que son los mismos que la primer consulta
 
@@ -39,6 +41,7 @@ Tabla origen: Sales.SalesReason
 Tabla aplicable: Sales.SalesOrderHeaderSalesReason?
 
 P1 => SalesReasonID = 28
+P2 => SalesReasonID != 28
 
 -- Consulta 6 -- 
 -- Listar el total de ordenes hechas por cada representante de ventas
@@ -62,37 +65,71 @@ los mismos que los de la consulta 6. ¿?
 
 Checar cuales son los CustomerID que no tienen null en PersonID
 
-P1 = CustomerID = 11000
+P1 => CustomerID = 11000
 ...
-P19,119 = CustomerID = 30118
+P19,119 => CustomerID = 30118
 
--- Consulta 9 -- 
+-- Consulta 9 --
+-- Listar el producto más vendido por cada categoría
+Tabla origen: Production.ProductCategory
+Tabla aplicable: Sales.SalesOrderDetail
+
+P1 => ProductCategoryID = 1
+P2 => ProductCategoryID = 2
+P3 => ProductCategoryID = 3
+P4 => ProductCategoryID = 4
+
+-- Consulta 10 --
+-- Listar los productos con ofertas en el territorio 5
+Tabla origen: Sales.SalesTerritory
+Tabla aplicable: Sales.SalesOrderDetail
+
+P1 => TerritoryID = 5
+P2 => TerritoryID != 5
+
+-- Consulta 11 --
+-- Listar los cinco productos más solicitados en cada uno de los territorios
+Tabla origen: Sales.SalesTerritory
+Tabla aplicable: Sales.SalesOrderDetail
+
+Los mismos que en la consulta 1, pero aplicados en diferente tabla
+
+-- Consulta 12 --
+-- Listar el producto menos solicitado por cada territorio 
+Tabla origen: Sales.SalesTerritory
+Tabla aplicable: Sales.SalesOrderDetail
+
+Los mismos que en la consulta 11, aplicados en la misma tabla
+
+-- Consulta 13 -- 
 -- Actualizar nombre de tarjeta de credito de credito SuperiorCard a SCard
 Tabla origen: Sales.CreditCard
 Tabla aplicable: Sales.CreditCard
 
-P1 = CardType = SuperiorCard
+P1 => CardType = SuperiorCard
+P2 => CardType != SuperiorCard
 
--- Consulta 10 -- 
+-- Consulta 14 -- 
 -- Listado de registros donde el ID de territorio de clientes es 1 y 3
 Tabla origen: Sales.SalesTerritory
 Tabla aplicable: Sales.Customer
 
 Predicados ya aplicados en la consulta 1, pero en diferente relacion(tabla)
 
--- Consulta 11 -- 
+-- Consulta 15 -- 
 -- Listado de ventas con costo mayor a 2000 y menor a 4000
 Tabla origen: Sales.SalesOrderHeader
 Tabla aplicable: Sales.SalesOrderHeader
 
 P1 = TotalDue < 2000
 P2 = TotalDue > 2000
+P3 = TotalDue < 4000
+P4 = TotalDue > 4000
 
-Como hacerle para los rangos?
-
--- Consulta 12 -- 
+-- Consulta 16 -- 
 -- Listado de cambio de moneda de USD a MXN
 Tabla origen: Sales.CurrencyRate
 Tabla aplicable: Sales.CurrencyRate
 
-P1 =>  ToCurrencyCode = MXN
+P1 => ToCurrencyCode = MXN
+P2 => ToCurrencyCode != MXN
