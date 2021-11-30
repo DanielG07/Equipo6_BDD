@@ -27,3 +27,12 @@ where SalesPersonID is not null
 group by SalesPersonID) a2
 on a1.BusinessEntityID = a2.SalesPersonID
 order by Total_Sale desc
+
+
+-- Listar los 5 productos diferentes mas vendidos por cantidad - historial global
+
+select top 5 p.Name, sum(sod.OrderQty) as Total
+from Production.Product p
+inner join Sales.SalesOrderDetail sod on sod.ProductID = p.ProductID
+group by p.Name
+order by 2 desc
