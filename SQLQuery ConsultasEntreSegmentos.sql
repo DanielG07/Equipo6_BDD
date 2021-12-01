@@ -4,7 +4,7 @@
 
 -------------------------------------------------------------------------------------------------------
 
---Listar las ordenes que utilizan el m�todo de envio 'CARGO TRANSPORT 5' con su tarifa de envio
+--Listar las ordenes que utilizan el método de envio 'CARGO TRANSPORT 5' con su tarifa de envio
 
 select t1.SalesOrderID, t1.ShipDate, t1.ShipToAddressID, t1.ShipMethodID, t2.Name, t2.ShipRate
 from Sales.SalesOrderHeader t1
@@ -36,3 +36,12 @@ from Production.Product p
 inner join Sales.SalesOrderDetail sod on sod.ProductID = p.ProductID
 group by p.Name
 order by 2 desc
+
+
+-- Listar el producto que tiene el precio de venta más caro que esté en oferta especial
+select P1.ProductID, P1."Name",ListPrice as Price from Production.Product P1
+join Sales.SpecialOfferProduct P2
+ON P1.ProductID= P2.ProductID
+where ListPrice = (select max(ListPrice ) MaxPrice from Production.Product);
+
+
