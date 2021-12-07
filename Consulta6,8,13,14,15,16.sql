@@ -90,6 +90,8 @@ begin
 end
 
 exec ofertas_terri5;
+
+
 -- 13.	Actualizar nombre de tarjeta de crédito SuperiorCard a SCard
 /*update Sales.CreditCard set CardType = 'SCard'
 where CardType = 'SuperiorCard';
