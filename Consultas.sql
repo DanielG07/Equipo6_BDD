@@ -1,3 +1,138 @@
+-- Consulta 1
+-- Listar el numero de ventas por territorio
+
+create procedure numero_ventas_territorio_listar @territorio nvarchar (100) as
+begin
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @servidor = servidor, @region = bd
+	from diccionario_dist
+	where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
+
+	set @sql =  'select st.Name as ''Territorio'', count(*) as ''Ventas'' 
+				from [' + @servidor + '].' + @region + '.Sales.SalesOrderHeader soh 
+				inner join Sales.SalesTerritory st on st.TerritoryID = soh.TerritoryID
+				where soh.TerritoryID = ' + @territorio +
+				'group by st.Name';
+
+	exec sp_executesql @sql
+end
+
+exec numero_ventas_territorio_listar '6'
+exec numero_ventas_territorio_listar '9'
+
+
+-- Consulta 2
+-- Listar el numero de ventas por tienda 
+
+create procedure numero_ventas_tienda_listar @tienda nvarchar (100) as
+begin
+	declare @territorio nvarchar(100);
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @servidor = @@SERVERNAME
+	
+	select @region = bd
+	from diccionario_dist
+	where servidor = @servidor
+
+	select @servidor
+	select @region
+	select @tienda
+
+	set @sql = 'select @territorio = TerritoryID
+				from ['+@servidor+'].(select @region).Sales.Customer
+				where StoreID = @tienda'
+
+	--select @servidor = servidor, @region = bd
+	--from diccionario_dist
+	--where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
+
+	--set @sql =  'select st.Name as ''Territorio'', count(*) as ''Ventas'' 
+	--			from [' + @servidor + '].' + @region + '.Sales.SalesOrderHeader soh 
+	--			inner join Sales.SalesTerritory st on st.TerritoryID = soh.TerritoryID
+	--			where soh.TerritoryID = ' + @territorio +
+	--			'group by st.Name';
+
+	--exec sp_executesql @sql
+end
+
+exec numero_ventas_tienda_listar 2
+
+
+-- Consulta 3
+-- Listar el total de clientes que pertenecen a cada territorio
+
+create procedure numero_clientes_listar @territorio nvarchar (100) as
+begin
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @servidor = servidor, @region = bd
+	from diccionario_dist
+	where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
+
+	set @sql =  'select st.Name as ''Territorio'', count(*) as ''Total Clientes'' 
+				from [' + @servidor + '].' + @region + '.Sales.Customer sc 
+				inner join Sales.SalesTerritory st on st.TerritoryID = sc.TerritoryID
+				where sc.TerritoryID = ' + @territorio + ' and PersonID is not null
+				group by st.Name';
+
+	exec sp_executesql @sql
+end
+
+exec numero_clientes_listar '6'
+exec numero_clientes_listar '9'
+
+
+-- Consulta 5
+-- Listar las ordenes realizadas debidas a anuncio de revista
+
+create procedure razon_ordenes_listar @razon nvarchar(5) as
+begin
+	declare @servidor nvarchar(100);
+	declare @region nvarchar(100);
+	declare @servidor1 nvarchar(100);
+	declare @region1 nvarchar(100);
+
+	declare @sql nvarchar(4000);
+	
+
+	select @servidor = servidor, @region = bd
+	from diccionario_dist
+	where id_fragmento = 1;
+
+	select @servidor1 = servidor, @region1 = bd
+	from diccionario_dist
+	where id_fragmento = 2;
+
+	set @sql =  'select soh.SalesOrderID as ''Orden'', sr.Name as ''Razon'', st.Name as ''Territorio'' 
+				from ['+ @servidor+'].'+@region+'.Sales.SalesOrderHeaderSalesReason sohsr 
+				inner join ['+ @servidor+'].'+@region+'.Sales.SalesReason sr on sr.SalesReasonID = sohsr.SalesReasonID
+				inner join ['+ @servidor+'].'+@region+'.Sales.SalesOrderHeader soh on soh.SalesOrderID = sohsr.SalesOrderID
+				inner join ['+ @servidor+'].'+@region+'.Sales.SalesTerritory st on st.TerritoryID = soh.TerritoryID
+				where sohsr.SalesReasonID = '+@razon+'
+				 union
+				select soh.SalesOrderID as ''Orden'', sr.Name as ''Razon'', st.Name as ''Territorio'' 
+				from ['+ @servidor1+'].'+@region1+'.Sales.SalesOrderHeaderSalesReason sohsr 
+				inner join ['+ @servidor1+'].'+@region1+'.Sales.SalesReason sr on sr.SalesReasonID = sohsr.SalesReasonID
+				inner join ['+ @servidor1+'].'+@region1+'.Sales.SalesOrderHeader soh on soh.SalesOrderID = sohsr.SalesOrderID
+				inner join ['+ @servidor1+'].'+@region1+'.Sales.SalesTerritory st on st.TerritoryID = soh.TerritoryID
+				where sohsr.SalesReasonID = '+@razon+''
+	
+
+	exec sp_executesql @sql
+end
+
+exec razon_ordenes_listar 4
+exec razon_ordenes_listar 3
+
+
 -- 6.	Listar el total de ordenes hechas por cada representante de ventas
 /*select SalesPersonID as 'Representante de Ventas', count(*) as 'Ordenes' from Sales.SalesOrderHeader 
 group by SalesPersonID*/
