@@ -57,8 +57,40 @@ begin
 end
 
 exec ventas_person;
+-- 10.	Listar los productos con ofertas en el territorio 5
 
--- 13.	Actualizar nombre de tarjeta de crÈdito SuperiorCard a SCard
+/*Select  Tabla2.TerritoryID as Territorio, Tabla1.ProductID, Tabla1.SpecialOfferID as Ofertas 
+From AmericanServer.AdventureWorks2019.Sales.SalesOrderDetail  as Tabla1  
+ 	inner join AmericanServer.AdventureWorks2019.Sales.SalesOrderHeader as Tabla2 on Tabla1.SalesOrderID = Tabla2.SalesOrderID 
+group by Tabla1.ProductID, Tabla2.TerritoryID, Tabla1.SpecialOfferID
+having Tabla2.TerritoryID = 5 and Tabla1.SpecialOfferID > 1 */
+alter procedure ofertas_terri5 as
+begin
+	declare @servidor nvarchar(100);
+	declare @nom_bd nvarchar(100);
+	declare @nom_tabla nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @condicion varchar(200);
+	declare @nom_tabla2 nvarchar(100);
+	declare @i int = 0;
+	set  @nom_tabla='SalesOrderDetail';
+	set  @nom_tabla2='SalesOrderHeader';
+
+	while @i<2
+	begin
+		set @i = @i+1;
+		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+
+
+
+		set @sql = 'select Tabla2.TerritoryID as Territorio, Tabla1.ProductID, Tabla1.SpecialOfferID as Ofertas from ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla + ' ' +' as Tabla1 ' +' inner join '+ @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla2 + ' ' +' as Tabla2 '+' on Tabla1.SalesOrderID = Tabla2.SalesOrderID '+ 'group by ' +'Tabla1.ProductID, Tabla2.TerritoryID, Tabla1.SpecialOfferID ' +'having Tabla2.TerritoryID = 5 and Tabla1.SpecialOfferID > 1 '+'' ;
+		
+		exec sp_executesql @sql
+	end 
+end
+
+exec ofertas_terri5;
+-- 13.	Actualizar nombre de tarjeta de cr√©dito SuperiorCard a SCard
 /*update Sales.CreditCard set CardType = 'SCard'
 where CardType = 'SuperiorCard';
 */
