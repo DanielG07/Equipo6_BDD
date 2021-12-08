@@ -18,7 +18,7 @@ begin
 	while @i<2
 	begin
 		set @i = @i+1;
-		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+		select @servidor = servidor, @nom_bd = bd from diccionario_distri where id_fragmento = @i;
 		
 		set @sql = 'select SalesPersonID as "Representante de Ventas", count(*) as "Ordenes" from ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla + ' '+  'group by ' + @condicion +'';
 		
@@ -48,7 +48,7 @@ begin
 	while @i<2
 	begin
 		set @i = @i+1;
-		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+		select @servidor = servidor, @nom_bd = bd from diccionario_distri where id_fragmento = @i;
 		
 		set @sql = 'select '''+@servidor+''' as Territorio, SalesPersonID as "Representante de Ventas", sum(TotalDue) as "Total de Ventas" from ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla + ' '+  'group by ' + @condicion +'';
 		
@@ -57,6 +57,7 @@ begin
 end
 
 exec ventas_person;
+
 -- 10.	Listar los productos con ofertas en el territorio 5
 
 /*Select  Tabla2.TerritoryID as Territorio, Tabla1.ProductID, Tabla1.SpecialOfferID as Ofertas 
@@ -64,7 +65,7 @@ From AmericanServer.AdventureWorks2019.Sales.SalesOrderDetail  as Tabla1
  	inner join AmericanServer.AdventureWorks2019.Sales.SalesOrderHeader as Tabla2 on Tabla1.SalesOrderID = Tabla2.SalesOrderID 
 group by Tabla1.ProductID, Tabla2.TerritoryID, Tabla1.SpecialOfferID
 having Tabla2.TerritoryID = 5 and Tabla1.SpecialOfferID > 1 */
-alter procedure ofertas_terri5 as
+create procedure ofertas_terri5 as
 begin
 	declare @servidor nvarchar(100);
 	declare @nom_bd nvarchar(100);
@@ -79,7 +80,7 @@ begin
 	while @i<2
 	begin
 		set @i = @i+1;
-		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+		select @servidor = servidor, @nom_bd = bd from diccionario_distri where id_fragmento = @i;
 
 
 
@@ -90,8 +91,6 @@ begin
 end
 
 exec ofertas_terri5;
-
-
 -- 13.	Actualizar nombre de tarjeta de crédito SuperiorCard a SCard
 /*update Sales.CreditCard set CardType = 'SCard'
 where CardType = 'SuperiorCard';
@@ -112,15 +111,13 @@ begin
 	set  @nom_tabla= 'CreditCard';
 	set @asignacion ='CardType = ''SCard''';
 
-	while @i<2
-	begin
-		set @i = @i+1;
-		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+	select @servidor = servidor, @nom_bd = bd from diccionario_distri where bd='Resto'; 
+
 		
 			set @sql = 'Update ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla +' '+ 'set ' +@asignacion +' ' + 'where '+@condicion+'';
 
 		exec sp_executesql @sql
-		end 
+	 
 end
 
 exec update_credito; 
@@ -141,15 +138,12 @@ begin
 	set @condicion2 ='TerritoryID';
 	set  @nom_tabla='Customer';
 
-	while @i<2
-	begin
-		set @i = @i+1;
-		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+		select @servidor = servidor, @nom_bd = bd from diccionario_distri where bd='Resto';
 		
 		set @sql = 'select * from ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla + ' '+ 'where ' +@condicion + '' + 'order by ' + @condicion2 +'';
 		
 		exec sp_executesql @sql
-	end 
+	
 end
 
 exec cliente_1y3;
@@ -157,7 +151,7 @@ exec cliente_1y3;
 /*select * from Sales.SalesOrderHeader where TotalDue > 2000 and TotalDue < 4000
 order by TotalDue asc;*/
 
-alter procedure ventas_2a4 as
+create procedure ventas_2a4 as
 begin
 	declare @servidor nvarchar(100);
 	declare @nom_bd nvarchar(100);
@@ -173,7 +167,7 @@ begin
 	while @i<2
 	begin
 		set @i = @i+1;
-		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+		select @servidor = servidor, @nom_bd = bd from diccionario_distri where id_fragmento = @i;
 		
 		set @sql = 'select * from ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla + ' '+ 'where ' +@condicion + '' + 'order by ' + @condicion2 +'';
 		
@@ -183,7 +177,7 @@ end
 
 exec ventas_2a4;
 --16.	Listado de cambio de moneda de USD a MXN
-/*select * from Sales.CurrencyRate where FromCurrencyCode = 'USD' and ToCurrencyCode = 'MXN';*/
+/*select * from EuropeanServer.Resto.Sales.CurrencyRate where FromCurrencyCode = 'USD' and ToCurrencyCode = 'MXN';*/
 
 alter procedure cambio_moneda as
 begin
@@ -197,16 +191,13 @@ begin
 	set @condicion = 'FromCurrencyCode = ''USD'' and ToCurrencyCode = ''MXN''';
 	set  @nom_tabla='CurrencyRate';
 
-	while @i<2
-	begin
-		set @i = @i+1;
-		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
+		select @servidor = servidor, @nom_bd = bd from diccionario_distri where bd='Resto';
 		
 		set @sql = 'select * from ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla + ' '+ 'where ' +@condicion + '' ;
-		
 		exec sp_executesql @sql
-	end 
+		
 end
 
 exec cambio_moneda;
-
+/*++++++++++++++++++ NOTA ++++++++++++++++++++++*/
+/*La base de datos Resto es la base de datos de contiene el resto de tablas que no estan en NorteAmerica ni Europa-Pacifico*/
