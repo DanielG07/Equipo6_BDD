@@ -1,6 +1,6 @@
 USE EUROPACIFICO
 
-/* DICCIONARIO DE FRAGMENTACIÓN */
+/* DICCIONARIO DE FRAGMENTACIÃ“N */
 
 
 -- Se debe almacenar en cada fragmento o en cada servidor
@@ -10,7 +10,7 @@ CREATE TABLE dicci_dist_proy (
   servidor varchar(100), -- nombre del servidor vinculado
   bd varchar(100), -- nombre de la base que aloja al fragmento
   --name_tabla varchar(100), -- nombre de la tabla que representa fragmento
-  col_frag varchar(100) -- columna que se utiliza como criterio de fragmentación
+  col_frag varchar(100) -- columna que se utiliza como criterio de fragmentaciÃ³n
 )
 
 CREATE TABLE val_col_frag (
@@ -85,8 +85,12 @@ begin
 	declare @servidor nvarchar(100);
 	declare @sql nvarchar(1000);
 	declare @region nvarchar(100);
+	declare @Parametros nvarchar(500);
+	declare @servidor2 nvarchar(100);
+	declare @region2 nvarchar(100);
 
-	select @servidor = @@SERVERNAME
+	--select @servidor = @@SERVERNAME
+	select @servidor = 'LSERVER2'
 	
 	select @region = bd
 	from dicci_dist_proy
@@ -94,27 +98,68 @@ begin
 
 	select @servidor
 	select @region
-	select @tienda
 
-	set @sql = 'select @territorio = TerritoryID
-				from ['+@servidor+'].(select @region).Sales.Customer
-				where StoreID = @tienda'
+	select @sql = N'select @territorioOUT = TerritoryID
+				from ['+@servidor+'].['+@region+'].Sales.Customer
+				where StoreID =' +@tienda
 
-	--select @servidor = servidor, @region = bd
-	--from diccionario_dist
-	--where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
+	set @Parametros = N'@territorioOUT nvarchar (100) OUTPUT'
 
-	--set @sql =  'select st.Name as ''Territorio'', count(*) as ''Ventas'' 
-	--			from [' + @servidor + '].' + @region + '.Sales.SalesOrderHeader soh 
-	--			inner join Sales.SalesTerritory st on st.TerritoryID = soh.TerritoryID
-	--			where soh.TerritoryID = ' + @territorio +
-	--			'group by st.Name';
+	exec sp_executesql @sql, @Parametros, @territorioOUT=@territorio OUTPUT
 
-	--exec sp_executesql @sql
+	if (isnull(@territorio,0) = 0)
+	begin
+		select 'null'
+		select @servidor = servidor, @region = bd
+		from dicci_dist_proy
+		where servidor != @servidor;
+
+		select @servidor
+		select @region
+
+		exec sp_executesql @sql, @Parametros, @territorioOUT=@territorio OUTPUT
+
+		select @territorio
+
+		if (isnull(@territorio,0) = 0)
+		begin
+			select 'Error: Territorio no encontrado'
+		end
+		else
+		begin
+			 select 'no null'
+
+			 select @servidor2 = servidor, @region2 = bd
+			 from dicci_dist_proy where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
+
+			 set @sql =  'select st.Name as ''Territorio'', count(*) as ''Ventas'' 
+					from [' + @servidor2 + '].' + @region2 + '.Sales.SalesOrderHeader soh 
+					inner join [' + @servidor + '].' + @region + '.Sales.SalesTerritory st on st.TerritoryID = soh.TerritoryID
+					where soh.TerritoryID = ' + @territorio +
+					'group by st.Name';
+
+
+			exec sp_executesql @sql
+		end
+	end
+	else
+	begin
+		 select 'no null'
+
+		 select @servidor2 = servidor, @region2 = bd
+			 from dicci_dist_proy where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
+
+		 set @sql =  'select st.Name as ''Territorio'', count(*) as ''Ventas'' 
+				from [' + @servidor2 + '].' + @region2 + '.Sales.SalesOrderHeader soh 
+				inner join [' + @servidor + '].' + @region + '.Sales.SalesTerritory st on st.TerritoryID = soh.TerritoryID
+				where soh.TerritoryID = ' + @territorio +
+				'group by st.Name';
+
+		exec sp_executesql @sql
+	end
 end
 
-exec numero_ventas_tienda_listar 2
-
+exec numero_ventas_tienda_listar 322
 
 -- Consulta 3
 -- Listar el total de clientes que pertenecen a cada territorio
@@ -291,7 +336,7 @@ begin
 end
 
 exec ofertas_terri5;
--- 13.	Actualizar nombre de tarjeta de crédito SuperiorCard a SCard
+-- 13.	Actualizar nombre de tarjeta de crÃ©dito SuperiorCard a SCard
 /*update Sales.CreditCard set CardType = 'SCard'
 where CardType = 'SuperiorCard';
 */
