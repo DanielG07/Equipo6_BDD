@@ -124,6 +124,40 @@ exec numero_clientes_listar '6'
 exec numero_clientes_listar '9'
 
 
+-- Consulta 4
+-- Actualizar la oferta de llantas de montaña con un descuento del 40%
+create procedure actualizar_descuento_producto @producto nvarchar(5), @ofertaNueva nvarchar(5) as
+begin
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @servidor = @@SERVERNAME
+	select @region = bd
+	from diccionario_dist
+	where servidor = @servidor
+
+	set @sql = 'update ['+@servidor+'].['+@region+'].Sales.SpecialOffer
+				set DiscountPct = '+@ofertaNueva+
+				' where SpecialOfferID = '+@producto 
+
+	select @sql
+	exec sp_executesql @sql
+	
+	select @servidor = servidor, @region = bd
+	from diccionario_dist
+	where servidor not in (@servidor);
+
+	set @sql = 'update ['+@servidor+'].['+@region+'].Sales.SpecialOffer
+				set DiscountPct = '+@ofertaNueva+
+				' where SpecialOfferID = '+@producto 
+
+	select @sql
+end
+
+exec actualizar_descuento_producto '10', '0.40'
+
+
 -- Consulta 5
 -- Listar las ordenes realizadas debidas a anuncio de revista
 
