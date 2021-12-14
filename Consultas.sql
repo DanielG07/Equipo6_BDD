@@ -132,27 +132,17 @@ begin
 	declare @sql nvarchar(1000);
 	declare @region nvarchar(100);
 
-	select @servidor = @@SERVERNAME
-	select @region = bd
-	from diccionario_dist
-	where servidor = @servidor
+	select @region = 'AdventureWorks2019'
+	select @servidor = servidor
+	from dicci_dist_proy
+	where bd = @region
 
 	set @sql = 'update ['+@servidor+'].['+@region+'].Sales.SpecialOffer
-				set DiscountPct = '+@ofertaNueva+
-				' where SpecialOfferID = '+@producto 
+				set DiscountPct = '+@ofertaNueva+', ModifiedDate = getdate()
+				 where SpecialOfferID = '+@producto 
 
-	select @sql
 	exec sp_executesql @sql
 	
-	select @servidor = servidor, @region = bd
-	from diccionario_dist
-	where servidor not in (@servidor);
-
-	set @sql = 'update ['+@servidor+'].['+@region+'].Sales.SpecialOffer
-				set DiscountPct = '+@ofertaNueva+
-				' where SpecialOfferID = '+@producto 
-
-	select @sql
 end
 
 exec actualizar_descuento_producto '10', '0.40'
@@ -230,6 +220,32 @@ begin
 end
 
 exec ordenes_rventas;
+
+
+-- Consulta 7
+-- Agregar el producto "HL Road Frame - Black, 58" a la oferta "Descuento por volumen 11 a 14"
+
+create procedure actualizar_oferta_producto @producto nvarchar(5), @oferta nvarchar(5) as
+begin
+
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @region = 'AdventureWorks2019'
+	select @servidor = servidor
+	from dicci_dist_proy
+	where bd = @region
+
+	set @sql = 'insert into ['+@servidor+'].['+@region+'].Sales.SpecialOfferProduct(SpecialOfferID, ProductID, ModifiedDate)
+				values('+@producto+', '+@oferta+', '+getdate()+')' 
+
+	exec sp_executesql @sql
+
+
+end
+
+exec actualizar_oferta_producto '2' '722'
 
 -- 8.	La suma de total de venta por PersonID
 /*select SalesPersonID as 'Representante de Ventas', sum(TotalDue) as 'Total de Ventas' from Sales.SalesOrderHeader 
