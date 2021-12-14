@@ -2,7 +2,7 @@ USE NORTEAMERICA;
 ---USE EUROPACIFICO;
 
 
-/* DICCIONARIO DE FRAGMENTACIÓN */
+/* DICCIONARIO DE FRAGMENTACIÃ“N */
 
 
 -- Se debe almacenar en cada fragmento o en cada servidor
@@ -12,7 +12,7 @@ CREATE TABLE dicci_dist_proy (
   servidor varchar(100), -- nombre del servidor vinculado
   bd varchar(100), -- nombre de la base que aloja al fragmento
   --name_tabla varchar(100), -- nombre de la tabla que representa fragmento
-  col_frag varchar(100) -- columna que se utiliza como criterio de fragmentación
+  col_frag varchar(100) -- columna que se utiliza como criterio de fragmentaciÃ³n
 )
 
 CREATE TABLE val_col_frag (
@@ -193,7 +193,7 @@ exec numero_clientes_listar '6'
 exec numero_clientes_listar '9'
 
 -- Consulta 4
--- Actualizar la oferta de llantas de montaña con un descuento del 40%
+-- Actualizar la oferta de llantas de montaÃ±a con un descuento del 40%
 create procedure actualizar_descuento_producto @producto nvarchar(5), @ofertaNueva nvarchar(5) as
 begin
 	declare @servidor nvarchar(100);
@@ -353,6 +353,84 @@ end
 
 exec ventas_person;
 
+-- 9.   Listar el producto mas vendido por cada categoria
+/*Select * from LSERVER2.AdventureWorks2019.Production.ProductCategory
+
+Select top 1 ProductID, count(ProductID) as Total_ordenes from Sales.SalesOrderDetail
+where ProductID in
+(Select ProductID from
+(Select tb1.*,tb2.SalesOrderID from
+(Select pr.ProductID, sc.ProductCategoryID from LSERVER2.AdventureWorks2019.Production.Product pr
+inner join LSERVER2.AdventureWorks2019.Production.ProductSubcategory sc
+on pr.ProductSubcategoryID = sc.ProductSubcategoryID) tb1 
+inner join Sales.SalesOrderDetail tb2
+on tb1.ProductID = tb2.ProductID) fn
+where ProductCategoryID = 4)
+group by ProductID
+order by Total_ordenes desc
+
+select Name from LSERVER2.AdventureWorks2019.Production.Product where ProductID = 870*/
+
+alter procedure productomasvendido @categoria nvarchar(10) as
+begin
+	declare @servidor nvarchar(100);
+	--declare @nom_bd nvarchar(100);
+	declare @nom_tabla nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @sql2 nvarchar(1000);
+	declare @condicion varchar(200);
+	declare @nom_b nvarchar(100);
+	declare @i int;
+	set  @nom_tabla='SalesOrderDetail';
+	set  @nom_b='AdventureWorks2019';
+
+	DECLARE @VAR TABLE (
+		ProductoID int,
+		Total_Ordenes int);
+
+   DECLARE @NOM TABLE (
+        ProductoID int,
+		Nombre nvarchar(100));
+
+    --set @i = Cast(@categoria as int)
+
+	if @categoria != '1' and @categoria != '2' and @categoria != '3' and @categoria != '4'
+	begin
+	   Select 'Error. Categoria no valida'
+	end
+	else
+	begin
+	--select @nom_bd = db_name();
+	select @servidor = servidor from dicci_dist_proy where bd = @nom_b;
+
+
+    set @sql = 	'Select top 1 ProductID, count(ProductID) as Total_ordenes from Sales.'+@nom_tabla+'
+				where ProductID in
+				(Select ProductID from
+				(Select tb1.*,tb2.SalesOrderID from
+				(Select pr.ProductID, sc.ProductCategoryID from '+@servidor+'.'+@nom_b+'.Production.Product pr
+				inner join '+@servidor+'.'+@nom_b+'.Production.ProductSubcategory sc
+				on pr.ProductSubcategoryID = sc.ProductSubcategoryID) tb1 
+				inner join Sales.'+@nom_tabla+' tb2
+				on tb1.ProductID = tb2.ProductID) fn
+				where ProductCategoryID = '+@categoria+')
+				group by ProductID
+				order by Total_ordenes desc';
+
+	set @sql2 = 'select ProductID, Name from '+@servidor+'.'+@nom_b+'.Production.Product';
+
+	insert into @VAR exec sys.sp_executesql @sql
+	insert into @NOM exec sys.sp_executesql @sql2
+
+	Select vr.ProductoID, nm.Nombre, vr.Total_Ordenes from @VAR vr
+	inner join @NOM nm
+	on vr.ProductoID = nm.ProductoID
+	end
+
+end
+
+exec productomasvendido '4';
+
 -- 10.	Listar los productos con ofertas en el territorio 5
 
 /*Select  Tabla2.TerritoryID as Territorio, Tabla1.ProductID, Tabla1.SpecialOfferID as Ofertas 
@@ -388,7 +466,208 @@ begin
 end
 
 exec ofertas_terri5;
--- 13.	Actualizar nombre de tarjeta de crédito SuperiorCard a SCard
+
+-- 11.  Listar los cinco productos mas solicitados en cada uno de los territorios
+
+/*select top 5 sod.ProductID, count(ProductID) as Total_compras from Sales.SalesOrderDetail sod
+inner join Sales.SalesOrderHeader soh
+on sod.SalesOrderID = soh.SalesOrderID
+where TerritoryID = 2
+group by ProductID
+order by Total_compras desc*/
+
+create procedure productos_massolicitados @territorio nvarchar(10) as
+begin
+	declare @servidor nvarchar(100);
+	declare @servidor2 nvarchar(100);
+	--declare @nom_bd nvarchar(100);
+	declare @nom_tabla nvarchar(100);
+	declare @nom_tabla2 nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @sql2 nvarchar(1000);
+	declare @condicion varchar(200);
+	declare @nom_b nvarchar(100);
+	declare @nom_b2 nvarchar(100);
+	declare @nom_bd nvarchar(100);
+	declare @i int;
+	declare @i2 int;
+	declare @i3 int;
+	declare @i4 int;
+	set  @nom_tabla='SalesOrderDetail';
+	set  @nom_tabla2='SalesOrderHeader';
+	set  @nom_b='AdventureWorks2019';
+
+	DECLARE @VAR TABLE (
+		ProductoID int,
+		Total_Compras int);
+
+   DECLARE @NOM TABLE (
+        ProductoID int,
+		Nombre nvarchar(100));
+
+	DECLARE @numeros TABLE (
+		idfragmento int,
+		id_territorio int);
+
+    --set @i = Cast(@categoria as int)
+	if @territorio <= 10
+	begin
+    select @nom_bd = db_name();
+    insert into @numeros select id_fragmento ,CAST(val_col as int) from val_col_frag
+	select @i = max(id_territorio), @i2 = min(id_territorio) from @numeros where idfragmento = (select id_fragmento from dicci_dist_proy where bd = @nom_bd)
+	select @i3 = max(id_territorio), @i4 = min(id_territorio) from @numeros where idfragmento = (select id_fragmento from dicci_dist_proy where bd != @nom_bd and id_fragmento != 2)
+	
+	if @territorio >= @i2 and @territorio <= @i --!= '1' and @territorio != '2' and @territorio != '3' and @territorio != '4'
+	begin
+	   select @servidor = servidor from dicci_dist_proy where bd = @nom_b;
+
+
+    set @sql = 	'select top 5 sod.ProductID, count(ProductID) as Total_compras from Sales.'+@nom_tabla+' sod
+				inner join Sales.'+@nom_tabla2+' soh
+				on sod.SalesOrderID = soh.SalesOrderID
+				where TerritoryID = '+@territorio+'
+				group by ProductID
+				order by Total_compras desc'
+
+	set @sql2 = 'select ProductID, Name from '+@servidor+'.'+@nom_b+'.Production.Product';
+
+	end
+
+	if @territorio >= @i4 and @territorio <= @i3 
+	begin
+	select @servidor = servidor from dicci_dist_proy where bd = @nom_b;
+	select @servidor2 = servidor, @nom_b2 = bd from dicci_dist_proy where bd != @nom_bd and id_fragmento != 2
+
+    set @sql = 	'select top 5 sod.ProductID, count(ProductID) as Total_compras from '+@servidor2+'.'+@nom_b2+'.Sales.'+@nom_tabla+' sod
+				inner join '+@servidor2+'.'+@nom_b2+'.Sales.'+@nom_tabla2+' soh
+				on sod.SalesOrderID = soh.SalesOrderID
+				where TerritoryID = '+@territorio+'
+				group by ProductID
+				order by Total_compras desc'
+
+	set @sql2 = 'select ProductID, Name from '+@servidor+'.'+@nom_b+'.Production.Product';
+
+	end
+	end
+	else
+	begin
+	--select @nom_bd = db_name();
+	select 'Error. Territorio no valido'
+	end
+
+	insert into @VAR exec sys.sp_executesql @sql
+	insert into @NOM exec sys.sp_executesql @sql2
+
+	Select vr.ProductoID, nm.Nombre, vr.Total_Compras from @VAR vr
+	inner join @NOM nm
+	on vr.ProductoID = nm.ProductoID
+
+end
+
+exec productos_massolicitados '9';
+
+-- 12.  Listar el producto menos solicitado por cada territorio
+
+/*select top 5 sod.ProductID, count(ProductID) as Total_compras from Sales.SalesOrderDetail sod
+inner join Sales.SalesOrderHeader soh
+on sod.SalesOrderID = soh.SalesOrderID
+where TerritoryID = 2
+group by ProductID
+order by Total_compras asc*/
+
+
+create procedure productos_menossolicitados @territorio nvarchar(10) as
+begin
+	declare @servidor nvarchar(100);
+	declare @servidor2 nvarchar(100);
+	--declare @nom_bd nvarchar(100);
+	declare @nom_tabla nvarchar(100);
+	declare @nom_tabla2 nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @sql2 nvarchar(1000);
+	declare @condicion varchar(200);
+	declare @nom_b nvarchar(100);
+	declare @nom_b2 nvarchar(100);
+	declare @nom_bd nvarchar(100);
+	declare @i int;
+	declare @i2 int;
+	declare @i3 int;
+	declare @i4 int;
+	set  @nom_tabla='SalesOrderDetail';
+	set  @nom_tabla2='SalesOrderHeader';
+	set  @nom_b='AdventureWorks2019';
+
+	DECLARE @VAR TABLE (
+		ProductoID int,
+		Total_Compras int);
+
+   DECLARE @NOM TABLE (
+        ProductoID int,
+		Nombre nvarchar(100));
+
+	DECLARE @numeros TABLE (
+		idfragmento int,
+		id_territorio int);
+
+    --set @i = Cast(@categoria as int)
+	if @territorio <= 10
+	begin
+    select @nom_bd = db_name();
+    insert into @numeros select id_fragmento ,CAST(val_col as int) from val_col_frag
+	select @i = max(id_territorio), @i2 = min(id_territorio) from @numeros where idfragmento = (select id_fragmento from dicci_dist_proy where bd = @nom_bd)
+	select @i3 = max(id_territorio), @i4 = min(id_territorio) from @numeros where idfragmento = (select id_fragmento from dicci_dist_proy where bd != @nom_bd and id_fragmento != 2)
+	
+	if @territorio >= @i2 and @territorio <= @i --!= '1' and @territorio != '2' and @territorio != '3' and @territorio != '4'
+	begin
+	   select @servidor = servidor from dicci_dist_proy where bd = @nom_b;
+
+
+    set @sql = 	'select top 1 sod.ProductID, count(ProductID) as Total_compras from Sales.'+@nom_tabla+' sod
+				inner join Sales.'+@nom_tabla2+' soh
+				on sod.SalesOrderID = soh.SalesOrderID
+				where TerritoryID = '+@territorio+'
+				group by ProductID
+				order by Total_compras asc'
+
+	set @sql2 = 'select ProductID, Name from '+@servidor+'.'+@nom_b+'.Production.Product';
+
+	end
+
+	if @territorio >= @i4 and @territorio <= @i3 
+	begin
+	select @servidor = servidor from dicci_dist_proy where bd = @nom_b;
+	select @servidor2 = servidor, @nom_b2 = bd from dicci_dist_proy where bd != @nom_bd and id_fragmento != 2
+
+    set @sql = 	'select top 1 sod.ProductID, count(ProductID) as Total_compras from '+@servidor2+'.'+@nom_b2+'.Sales.'+@nom_tabla+' sod
+				inner join '+@servidor2+'.'+@nom_b2+'.Sales.'+@nom_tabla2+' soh
+				on sod.SalesOrderID = soh.SalesOrderID
+				where TerritoryID = '+@territorio+'
+				group by ProductID
+				order by Total_compras asc'
+
+	set @sql2 = 'select ProductID, Name from '+@servidor+'.'+@nom_b+'.Production.Product';
+
+	end
+	end
+	else
+	begin
+	--select @nom_bd = db_name();
+	select 'Error. Territorio no valido'
+	end
+
+	insert into @VAR exec sys.sp_executesql @sql
+	insert into @NOM exec sys.sp_executesql @sql2
+
+	Select vr.ProductoID, nm.Nombre, vr.Total_Compras from @VAR vr
+	inner join @NOM nm
+	on vr.ProductoID = nm.ProductoID
+
+end
+
+exec productos_menossolicitados '8';
+exec productos_menossolicitados '10';
+
+-- 13.	Actualizar nombre de tarjeta de crÃ©dito SuperiorCard a SCard
 /*update Sales.CreditCard set CardType = 'SCard'
 where CardType = 'SuperiorCard';
 */
@@ -500,7 +779,7 @@ end
 exec cambio_moneda;
 
 -- Consulta 1 - Segmentos
---Listar las ordenes que utilizan el método de envio 'CARGO TRANSPORT 5' con su tarifa de envio
+--Listar las ordenes que utilizan el mÃ©todo de envio 'CARGO TRANSPORT 5' con su tarifa de envio
 
 create procedure listar_ordenes_por_metodo @oferta nvarchar(5) as
 begin
@@ -602,7 +881,7 @@ end
 exec listar_5_productos_mas_vendidos
 
 -- Consulta 4 - Segmentos
--- Listar el producto que tiene el precio de venta más caro que esté en oferta especial
+-- Listar el producto que tiene el precio de venta mÃ¡s caro que estÃ© en oferta especial
 
 create procedure listar_producto_mas_caro_oferta as
 begin
