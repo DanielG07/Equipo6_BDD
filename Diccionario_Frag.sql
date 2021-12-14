@@ -187,6 +187,28 @@ end
 exec numero_clientes_listar '6'
 exec numero_clientes_listar '9'
 
+-- Consulta 4
+-- Actualizar la oferta de llantas de montaña con un descuento del 40%
+create procedure actualizar_descuento_producto @producto nvarchar(5), @ofertaNueva nvarchar(5) as
+begin
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @region = 'AdventureWorks2019'
+	select @servidor = servidor
+	from dicci_dist_proy
+	where bd = @region
+
+	set @sql = 'update ['+@servidor+'].['+@region+'].Sales.SpecialOffer
+				set DiscountPct = '+@ofertaNueva+', ModifiedDate = getdate()
+				 where SpecialOfferID = '+@producto 
+
+	exec sp_executesql @sql
+	
+end
+
+exec actualizar_descuento_producto '10', '0.40'
 
 -- Consulta 5
 -- Listar las ordenes realizadas debidas a anuncio de revista
@@ -268,6 +290,31 @@ begin
 end
 
 exec ordenes_rventas;
+
+-- Consulta 7
+-- Agregar el producto "HL Road Frame - Black, 58" a la oferta "Descuento por volumen 11 a 14"
+
+create procedure actualizar_oferta_producto @producto nvarchar(5), @oferta nvarchar(5) as
+begin
+
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @region = 'AdventureWorks2019'
+	select @servidor = servidor
+	from dicci_dist_proy
+	where bd = @region
+
+	set @sql = 'insert into ['+@servidor+'].['+@region+'].Sales.SpecialOfferProduct(SpecialOfferID, ProductID, rowguid, ModifiedDate)
+				values('+@producto+', '+@oferta+',newid(), getdate())' 
+
+	exec sp_executesql @sql
+
+
+end
+
+exec actualizar_oferta_producto '3', '722'
 
 -- 8.	La suma de total de venta por PersonID
 /*select SalesPersonID as 'Representante de Ventas', sum(TotalDue) as 'Total de Ventas' from Sales.SalesOrderHeader 
