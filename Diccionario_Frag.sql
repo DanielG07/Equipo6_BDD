@@ -79,7 +79,7 @@ exec numero_ventas_territorio_listar '9'
 -- Consulta 2
 -- Listar el numero de ventas por tienda 
 
-create procedure numero_ventas_tienda_listar @tienda nvarchar (100) as
+alter procedure numero_ventas_tienda_listar @tienda nvarchar (100) as
 begin
 	declare @territorio nvarchar(100);
 	declare @servidor nvarchar(100);
@@ -96,8 +96,8 @@ begin
 	from dicci_dist_proy
 	where servidor = @servidor
 
-	select @servidor
-	select @region
+	-- select @servidor
+	-- select @region
 
 	select @sql = N'select @territorioOUT = TerritoryID
 				from ['+@servidor+'].['+@region+'].Sales.Customer
@@ -109,17 +109,17 @@ begin
 
 	if (isnull(@territorio,0) = 0)
 	begin
-		select 'null'
+		-- select 'null'
 		select @servidor = servidor, @region = bd
 		from dicci_dist_proy
 		where servidor != @servidor;
 
-		select @servidor
-		select @region
+		-- select @servidor
+		-- select @region
 
 		exec sp_executesql @sql, @Parametros, @territorioOUT=@territorio OUTPUT
 
-		select @territorio
+		-- select @territorio
 
 		if (isnull(@territorio,0) = 0)
 		begin
@@ -127,7 +127,7 @@ begin
 		end
 		else
 		begin
-			 select 'no null'
+			 -- select 'no null'
 
 			 select @servidor2 = servidor, @region2 = bd
 			 from dicci_dist_proy where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
@@ -144,7 +144,7 @@ begin
 	end
 	else
 	begin
-		 select 'no null'
+		 -- select 'no null'
 
 		 select @servidor2 = servidor, @region2 = bd
 			 from dicci_dist_proy where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
@@ -187,6 +187,28 @@ end
 exec numero_clientes_listar '6'
 exec numero_clientes_listar '9'
 
+-- Consulta 4
+-- Actualizar la oferta de llantas de montaña con un descuento del 40%
+create procedure actualizar_descuento_producto @producto nvarchar(5), @ofertaNueva nvarchar(5) as
+begin
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @region = 'AdventureWorks2019'
+	select @servidor = servidor
+	from dicci_dist_proy
+	where bd = @region
+
+	set @sql = 'update ['+@servidor+'].['+@region+'].Sales.SpecialOffer
+				set DiscountPct = '+@ofertaNueva+', ModifiedDate = getdate()
+				 where SpecialOfferID = '+@producto 
+
+	exec sp_executesql @sql
+	
+end
+
+exec actualizar_descuento_producto '10', '0.40'
 
 -- Consulta 5
 -- Listar las ordenes realizadas debidas a anuncio de revista
@@ -269,11 +291,38 @@ end
 
 exec ordenes_rventas;
 
+-- Consulta 7
+-- Agregar el producto "HL Road Frame - Black, 58" a la oferta "Descuento por volumen 11 a 14"
+
+create procedure actualizar_oferta_producto @producto nvarchar(5), @oferta nvarchar(5) as
+begin
+
+	declare @servidor nvarchar(100);
+	declare @sql nvarchar(1000);
+	declare @region nvarchar(100);
+
+	select @region = 'AdventureWorks2019'
+	select @servidor = servidor
+	from dicci_dist_proy
+	where bd = @region
+
+	set @sql = 'insert into ['+@servidor+'].['+@region+'].Sales.SpecialOfferProduct(SpecialOfferID, ProductID, rowguid, ModifiedDate)
+				values('+@producto+', '+@oferta+',newid(), getdate())' 
+
+	exec sp_executesql @sql
+
+
+end
+
+exec actualizar_oferta_producto '3', '722'
+
+
+
 -- 8.	La suma de total de venta por PersonID
 /*select SalesPersonID as 'Representante de Ventas', sum(TotalDue) as 'Total de Ventas' from Sales.SalesOrderHeader 
 group by SalesPersonID */
 
-alter procedure ventas_person as
+create procedure ventas_person as
 begin
 	declare @servidor nvarchar(100);
 	declare @nom_bd nvarchar(100);
@@ -396,7 +445,7 @@ exec cliente_1y3;
 /*select * from Sales.SalesOrderHeader where TotalDue > 2000 and TotalDue < 4000
 order by TotalDue asc;*/
 
-alter procedure ventas_2a4 as
+create procedure ventas_2a4 as
 begin
 	declare @servidor nvarchar(100);
 	declare @nom_bd nvarchar(100);
