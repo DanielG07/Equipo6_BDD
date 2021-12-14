@@ -237,15 +237,15 @@ begin
 	from dicci_dist_proy
 	where bd = @region
 
-	set @sql = 'insert into ['+@servidor+'].['+@region+'].Sales.SpecialOfferProduct(SpecialOfferID, ProductID, ModifiedDate)
-				values('+@producto+', '+@oferta+', '+getdate()+')' 
+	set @sql = 'insert into ['+@servidor+'].['+@region+'].Sales.SpecialOfferProduct(SpecialOfferID, ProductID, rowguid, ModifiedDate)
+				values('+@producto+', '+@oferta+',newid(), getdate())' 
 
 	exec sp_executesql @sql
 
 
 end
 
-exec actualizar_oferta_producto '2' '722'
+exec actualizar_oferta_producto '2', '722'
 
 -- 8.	La suma de total de venta por PersonID
 /*select SalesPersonID as 'Representante de Ventas', sum(TotalDue) as 'Total de Ventas' from Sales.SalesOrderHeader 
