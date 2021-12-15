@@ -1,5 +1,0 @@
-dist
-node_modules
-.env
-config_instanciaA.ts
-config_instanciaB.ts
