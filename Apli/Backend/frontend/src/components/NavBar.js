@@ -7,7 +7,14 @@ import Box from '@mui/material/Box';
 import AppBar from "@mui/material/AppBar";
 import Consultas from "./Consultas";
 import PeopleAltTwoToneIcon from '@mui/icons-material/PeopleAltTwoTone';
-import Icon from '@mui/material/Icon';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import DnsIcon from '@mui/icons-material/Dns';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import InsertChartIcon from '@mui/icons-material/InsertChart';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -64,13 +71,22 @@ export default function BasicTabs() {
          indicatorColor="secondary"
          aria-label="basic tabs example">
           <Tab  icon={<PeopleAltTwoToneIcon/>} label="Integrantes"  {...a11yProps(0)} />
-          <Tab label="Consultas" {...a11yProps(1)} />
-          <Tab label="Grafo" {...a11yProps(2)} />
+          <Tab icon={<DnsIcon/>} label="Consultas" {...a11yProps(1)} />
+          <Tab icon={<InsertChartIcon/>} label="Grafo" {...a11yProps(2)} />
         </Tabs>
       </Box>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Item One
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar alt="Sayuri" src="/Sayuri.jpg" />
+        </ListItemAvatar>
+        <ListItemText
+          primary="Sayuri Panama Segura"
+        />
+      </ListItem>
+      </List>
       </TabPanel>
      <Consultas value={value} index={1}/>
       <TabPanel value={value} index={2}>
