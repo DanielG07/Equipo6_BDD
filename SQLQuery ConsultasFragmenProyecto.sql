@@ -84,7 +84,7 @@ exec numero_ventas_territorio_listar '9'
 -- Consulta 2
 -- Listar el numero de ventas por tienda 
 
-create procedure numero_ventas_tienda_listar @tienda nvarchar (100) as
+alter procedure numero_ventas_tienda_listar @tienda nvarchar (100) as
 begin
 	declare @territorio nvarchar(100);
 	declare @servidor nvarchar(100);
@@ -114,17 +114,17 @@ begin
 
 	if (isnull(@territorio,0) = 0)
 	begin
-		select 'null'
+		--select 'null'
 		select @servidor = servidor, @region = bd
 		from dicci_dist_proy
 		where servidor != @servidor;
 
-		select @servidor
-		select @region
+		--select @servidor
+		--select @region
 
 		exec sp_executesql @sql, @Parametros, @territorioOUT=@territorio OUTPUT
 
-		select @territorio
+		--select @territorio
 
 		if (isnull(@territorio,0) = 0)
 		begin
@@ -132,7 +132,7 @@ begin
 		end
 		else
 		begin
-			 select 'no null'
+			 --select 'no null'
 
 			 select @servidor2 = servidor, @region2 = bd
 			 from dicci_dist_proy where id_fragmento in (select id_fragmento from val_col_frag where val_col = @territorio);
@@ -164,8 +164,7 @@ begin
 	end
 end
 
-exec numero_ventas_tienda_listar 322
-
+exec numero_ventas_tienda_listar '934'
 -- Consulta 3
 -- Listar el total de clientes que pertenecen a cada territorio
 drop procedure numero_clientes_listar
@@ -210,7 +209,12 @@ begin
 				 where SpecialOfferID = '+@producto 
 	
 	exec sp_executesql @sql
+
+	set @sql = 'select *
+				from ['+@servidor+'].['+@region+'].Sales.SpecialOffer
+				where SpecialOfferID = '+@producto 
 	
+	exec sp_executesql @sql
 end
 
 exec actualizar_descuento_producto '10', '0.40'
@@ -321,11 +325,15 @@ begin
 
 	exec sp_executesql @sql
 
+	set @sql = 'select *
+				from ['+@servidor+'].['+@region+'].Sales.SpecialOfferProduct
+				where SpecialOfferID = '+@producto+' and ProductID = '+@oferta
+
+		exec sp_executesql @sql
 
 end
 
-exec actualizar_oferta_producto '2', '722'
-
+exec actualizar_oferta_producto '2', '680'
 
 -- 8.	La suma de total de venta por PersonID
 /*select SalesPersonID as 'Representante de Ventas', sum(TotalDue) as 'Total de Ventas' from Sales.SalesOrderHeader 
@@ -701,10 +709,15 @@ begin
 	select @servidor = servidor, @nom_bd = bd from dicci_dist_proy where bd='AdventureWorks2019'; 
 
 		
-			set @sql = 'Update ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla +' '+ 'set ' +@asignacion +' ' + 'where '+@condicion+'';
+	set @sql = 'Update ' + @servidor + '.' + @nom_bd + '.Sales.'+ @nom_tabla +' '+ 'set ' +@asignacion +' ' + 'where '+@condicion+'';
 
-		exec sp_executesql @sql
-	 
+	exec sp_executesql @sql
+
+	set @sql = 'select * 
+				from ['+@servidor+'].['+@nom_bd+'].Sales.'+@nom_tabla+'
+				where CardType = ''SCard'''
+
+	exec sp_executesql @sql
 end
 
 exec update_credito; 
