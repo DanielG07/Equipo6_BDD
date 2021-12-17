@@ -6,7 +6,7 @@ import consultaroutes from './consultasrouter';
 
 const app = express();
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 4000);
 app.use(consultaroutes)
 app.use(morgan("dev"));
 app.use(cors());

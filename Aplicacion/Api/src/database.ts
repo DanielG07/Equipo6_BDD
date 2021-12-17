@@ -7,9 +7,9 @@ const sql = require('mssql')
 // create the connection to database in SQL Server
 const sqlConfig = {
 	user: 'sa',
-  	password: 'Irvin19+',
+  	password: 'InstanciaA',
 	database: 'NORTEAMERICA',
-	server: 'localhost\\SQLEXPRESS01',
+	server: 'localhost\\INSTANCIAA',
 	pool: {
 	  max: 10,
 	  min: 0,
