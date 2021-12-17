@@ -109,6 +109,13 @@ const Consultas = (props) => {
         console.log(data)
         SetConsulta1(data.Consulta1)
     }
+    const loadConsulta2 =async()=>{
+
+      const response = await fetch('http://localhost:4000/consulta2')
+      const data = await response.json()
+      console.log(data)
+      SetConsulta2(data.Consulta2)
+  }
    
       const loadConsulta3 =async()=>{
   
@@ -124,6 +131,13 @@ const Consultas = (props) => {
         console.log(data)
         SetConsulta4(data.Consulta4)
     }
+    const loadConsulta5 =async()=>{
+  
+      const response = await fetch('http://localhost:4000/consulta5')
+      const data = await response.json()
+      console.log(data)
+      SetConsulta5(data.Consulta5)
+  }
     const loadConsulta6 =async()=>{
   
       const response = await fetch('http://localhost:4000/consulta6')
@@ -131,6 +145,13 @@ const Consultas = (props) => {
       console.log(data)
       SetConsulta6(data.Consulta6)
   }
+  const loadConsulta7 =async()=>{
+  
+    const response = await fetch('http://localhost:4000/consulta7')
+    const data = await response.json()
+    console.log(data)
+    SetConsulta7(data.Consulta7)
+}
   const loadConsulta8 =async()=>{
   
     const response = await fetch('http://localhost:4000/consulta8')
@@ -138,12 +159,111 @@ const Consultas = (props) => {
     console.log(data)
     SetConsulta8(data.Consulta8)
 }
+const loadConsulta9 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta9')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta9(data.Consulta9)
+}
+const loadConsulta10 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta10')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta10(data.Consulta10)
+}
+const loadConsulta11 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta11')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta11(data.Consulta11)
+}
+const loadConsulta12 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta12')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta12(data.Consulta12)
+}
+const loadConsulta13 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta13')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta13(data.Consulta13)
+}
+const loadConsulta14 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta14')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta14(data.Consulta14)
+}
+const loadConsulta15 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta15')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta15(data.Consulta15)
+}
+const loadConsulta16 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta16')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta16(data.Consulta16)
+}
+const loadConsulta17 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta1_segmento')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta17(data.Consulta1_Segmentos)
+}
+const loadConsulta18 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta2_segmento')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta18(data.Consulta2_Segmentos)
+}
+const loadConsulta19 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta3_segmento')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta19(data.Consulta3_Segmentos)
+}
+const loadConsulta20 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta4_segmento')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta20(data.Consulta4_Segmentos)
+}
     useEffect(()=>{
     loadConsulta1()
+    loadConsulta2()
     loadConsulta3()
     loadConsulta4()
+    loadConsulta5()
     loadConsulta6()
-    loadConsulta8 ()
+    loadConsulta7()
+    loadConsulta8()
+    loadConsulta9()
+    loadConsulta10()
+    loadConsulta11()
+    loadConsulta12()
+    loadConsulta13()
+    loadConsulta14()
+    loadConsulta15()
+    loadConsulta16()
+    loadConsulta17()
+    loadConsulta18()
+    loadConsulta19()
+    loadConsulta20()
     },[])
 
 return(
