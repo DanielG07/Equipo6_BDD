@@ -47,15 +47,46 @@ const ExpandMore = styled((props) => {
 
 const Consultas = (props) => {
     const [consulta1,SetConsulta1]= useState([]);
+    const [consulta2,SetConsulta2]= useState([]);
     const [consulta3,SetConsulta3]= useState([]);
     const [consulta4,SetConsulta4]= useState([]);
+    const [consulta5,SetConsulta5]= useState([]);
+    const [consulta7,SetConsulta7]= useState([]);
     const [consulta6,SetConsulta6]= useState([]);
     const [consulta8,SetConsulta8]= useState([]);
+    const [consulta9,SetConsulta9]= useState([]);
+    const [consulta10,SetConsulta10]= useState([]);
+    const [consulta11,SetConsulta11]= useState([]);
+    const [consulta12,SetConsulta12]= useState([]);
+    const [consulta13,SetConsulta13]= useState([]);
+    const [consulta14,SetConsulta14]= useState([]);
+    const [consulta15,SetConsulta15]= useState([]);
+    const [consulta16,SetConsulta16]= useState([]);
+    const [consulta17,SetConsulta17]= useState([]);
+    const [consulta18,SetConsulta18]= useState([]);
+    const [consulta19,SetConsulta19]= useState([]);
+    const [consulta20,SetConsulta20]= useState([]);
     const [expanded, setExpanded] = useState(false);
     const [expanded1, setExpanded1] = useState(false);
+    const [expanded2, setExpanded2] = useState(false);
+    const [expanded3, setExpanded3] = useState(false);
     const [expanded4, setExpanded4] = useState(false);
+    const [expanded5, setExpanded5] = useState(false);
     const [expanded6, setExpanded6] = useState(false);
+    const [expanded7, setExpanded7] = useState(false);
     const [expanded8, setExpanded8] = useState(false);
+    const [expanded9, setExpanded9] = useState(false);
+    const [expanded10, setExpanded10] = useState(false);
+    const [expanded11, setExpanded11] = useState(false);
+    const [expanded12, setExpanded12] = useState(false);
+    const [expanded13, setExpanded13] = useState(false);
+    const [expanded14, setExpanded14] = useState(false);
+    const [expanded15, setExpanded15] = useState(false);
+    const [expanded16, setExpanded16] = useState(false);
+    const [expanded17, setExpanded17] = useState(false);
+    const [expanded18, setExpanded18] = useState(false);
+    const [expanded19, setExpanded19] = useState(false);
+    const [expanded20, setExpanded20] = useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
