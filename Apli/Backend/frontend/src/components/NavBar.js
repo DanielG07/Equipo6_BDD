@@ -14,6 +14,13 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
+import Sayuri from '../avatar/say.jpg';
+import Yuval from '../avatar/Yuval1.jpg';
+import Joshep from '../avatar/joshep.jpg';
+import Daniel from '../avatar/daniel.jpg';
+import Osiris from '../avatar/osiris.jpg';
+
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,14 +84,46 @@ export default function BasicTabs() {
       </Box>
       </AppBar>
       <TabPanel value={value} index={0}>
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <List>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Sayuri" src="/Sayuri.jpg" />
+          <Avatar src={Joshep} sx={{ width: 100, height: 100 }} />
         </ListItemAvatar>
-        <ListItemText
-          primary="Sayuri Panama Segura"
-        />
+        <Typography variant="h5">
+          Camacho Domingez Irvin
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Daniel} sx={{ width: 100, height: 100 }} />
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Gonzalez Jimenez Danieñ
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Yuval} sx={{ width: 100, height: 100 }}/>
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Noe Zuriel Yuval 
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Osiris}sx={{ width: 100, height: 100 }} />
+        </ListItemAvatar>
+        <Typography variant="h5">
+         Orduña  Ramirez Osiris
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Sayuri}  sx={{ width: 100, height: 100 }}/>
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Panama Segura Sayuri
+        </Typography>
       </ListItem>
       </List>
       </TabPanel>

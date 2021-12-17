@@ -21,13 +21,13 @@ async function getConsulta3() {
 async function getConsulta4() {
   await sql.connect(sqlConfig)
   var request = new sql.Request();
-  let consulta4 = await request.query('exec razon_ordenes_listar 4')
+  let consulta4 = await request.query('exec actualizar_descuento_producto "10", "0.40"')
   return consulta4.recordset;
 }
 async function getConsulta5() {
   await sql.connect(sqlConfig)
   var request = new sql.Request();
-  let consulta5 = await request.query('exec actualizar_descuento_producto "10", "0.40"')
+  let consulta5 = await request.query('exec razon_ordenes_listar 4')
   return consulta5.recordset;
 }
 async function getConsulta6() {
