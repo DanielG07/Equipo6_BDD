@@ -20,7 +20,7 @@ const {
     getConsulta2_Segmentos,
     getConsulta3_Segmentos,
     getConsulta4_Segmentos
-  } = require("../controllers/Consultas.controllers");
+  } = require("../controllers/consultas.controllers");
   
 
 const router = Router();

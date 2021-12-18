@@ -13,6 +13,7 @@ const sqlConfig={
       options: {
         instanceName:'LSERVER',
         encrypt: true, // for azure
+        enableArithAbort: true,
         trustServerCertificate: true // change to true for local dev / self-signed certs
       }
 };

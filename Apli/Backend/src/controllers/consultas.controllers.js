@@ -39,7 +39,7 @@ async function getConsulta6() {
 async function getConsulta7() {
   await sql.connect(sqlConfig)
   var request = new sql.Request();
-  let consulta7 = await request.query("exec actualizar_oferta_producto '3', '722'")
+  let consulta7 = await request.query("exec  actualizar_oferta_producto '2', '680'")
   return consulta7.recordset;
 }
 async function getConsulta8() {
