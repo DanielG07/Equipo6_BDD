@@ -219,6 +219,20 @@ const loadConsulta14 =async()=>{
   console.log(data)
   SetConsulta14(data.Consulta14)
 }
+const loadConsulta15 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta15')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta15(data.Consulta15)
+}
+const loadConsulta16 =async()=>{
+  
+  const response = await fetch('http://localhost:4000/consulta16')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta16(data.Consulta16)
+}
     useEffect(()=>{
     loadConsulta1()
     loadConsulta2()
@@ -233,9 +247,8 @@ const loadConsulta14 =async()=>{
     loadConsulta12()
     loadConsulta13()
     loadConsulta14()
-   
-
-   
+    loadConsulta15()
+    loadConsulta16()
   
     },[])
 
@@ -847,6 +860,108 @@ return(
             <Typography> Id: {get.TerritoryID}</Typography>
             <Typography>Nombre: {get.EAccountNumber}</Typography>
             <Typography>Nombre: {get.rowguid}</Typography>
+            <Typography>Total deCompras: {get.ModifiedDate}</Typography>
+            
+             </div>
+   ))}
+   </CardContent>
+      </Collapse>
+       </Card>
+
+       <Card
+       style={{
+        marginBottom: ".7rem",
+        backgroundColor: "#e8eaf6",
+      }}
+    >
+        <CardContent
+        style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        ><Typography variant="h5"> Consulta 15 </Typography>
+        <Typography variant="h6">
+        Ventas por tienda
+        </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+        <ExpandMore
+          expand={expanded15}
+          onClick={handleExpandClick15}
+        >
+    <ExpandMoreIcon />
+        </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded15} timeout="auto" unmountOnExit>
+        <CardContent
+         style={{
+            flexDirection: 'row-reverse',
+           backgroundColor:"#f3e5f5",
+          }}>
+        {consulta15.map((get)=>(
+          <div
+            style={{
+              color: "black",
+            }}
+          >
+            <Typography> Id: {get.SalesOrderID}</Typography>
+            <Typography>Nombre: {get.RevisionNumber}</Typography>
+            <Typography> Id: {get.OrderDate}</Typography>
+            <Typography>Nombre: {get.DueDate}</Typography>
+            <Typography>Nombre: {get.ShipDate}</Typography>
+            <Typography>Total deCompras: {get.Statuss}</Typography>
+            <Typography>Nombre: {get.OnlineOrderFlag}</Typography>
+            <Typography>Nombre: {get.SalesOrderNumber}</Typography>
+            <Typography>Total deCompras: {get.PurchaseOrderNumber}</Typography>
+            <Typography>Total deCompras: {get.AccountNumber}</Typography>
+            
+             </div>
+   ))}
+   </CardContent>
+      </Collapse>
+       </Card>
+
+       <Card
+       style={{
+        marginBottom: ".7rem",
+        backgroundColor: "#e8eaf6",
+      }}
+    >
+        <CardContent
+        style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        ><Typography variant="h5"> Consulta 16 </Typography>
+        <Typography variant="h6">
+        Ventas por tienda
+        </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+        <ExpandMore
+          expand={expanded16}
+          onClick={handleExpandClick16}
+        >
+    <ExpandMoreIcon />
+        </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded16} timeout="auto" unmountOnExit>
+        <CardContent
+         style={{
+            flexDirection: 'row-reverse',
+           backgroundColor:"#f3e5f5",
+          }}>
+        {consulta16.map((get)=>(
+          <div
+            style={{
+              color: "black",
+            }}
+          >
+            <Typography> Id: {get.CurrencyRateID}</Typography>
+            <Typography>Nombre: {get.CurrencyRateDate}</Typography>
+            <Typography> Id: {get.FromCurrencyCode}</Typography>
+            <Typography>Nombre: {get.ToCurrencyCode}</Typography>
+            <Typography>Nombre: {get.AverageRate}</Typography>
             <Typography>Total deCompras: {get.ModifiedDate}</Typography>
             
              </div>
