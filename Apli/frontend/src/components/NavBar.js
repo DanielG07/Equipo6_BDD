@@ -7,6 +7,16 @@ import Typography from '@mui/material/Typography';
 import Consultas from "./Consultas";
 import PropTypes from 'prop-types';
 import Segmentos from './Segmentos';
+import Grafo  from '../avatar/grafo.png'
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import Osiris from '../avatar/osiris.jpg';
+import  Sayuri from '../avatar/say.jpg';
+import Joshep from "../avatar/joshep.jpg";
+import Daniel from '../avatar/daniel.jpg';
+import Yuval from '../avatar/Yuval1.jpg'
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -33,12 +43,7 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+
 
 export default function NavBar() {
     const [value, setValue] = React.useState('one');
@@ -68,12 +73,54 @@ export default function NavBar() {
       </Box>
       </AppBar>
       <TabPanel value={value} index={0}>
-   list
+      <List>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Joshep} sx={{ width: 100, height: 100 }} />
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Camacho Domingez Irvin
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Daniel} sx={{ width: 100, height: 100 }} />
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Gonzalez Jimenez Daniel
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Yuval} sx={{ width: 100, height: 100 }}/>
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Noe Zuriel Yuval 
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Osiris}sx={{ width: 100, height: 100 }} />
+        </ListItemAvatar>
+        <Typography variant="h5">
+         Orduña  Ramirez Osiris
+        </Typography>
+      </ListItem>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Sayuri}  sx={{ width: 100, height: 100 }}/>
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Panama Segura Sayuri
+        </Typography>
+      </ListItem>
+      </List>
+
       </TabPanel>
      <Consultas value={value} index={1}/>
      <Segmentos value={value} index={2}/>
       <TabPanel value={value} index={3}>
-        
+        <img src={Grafo}/>
       </TabPanel>
              </div>
        
