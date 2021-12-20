@@ -16,7 +16,8 @@ import Osiris from '../avatar/osiris.jpg';
 import  Sayuri from '../avatar/say.jpg';
 import Joshep from "../avatar/joshep.jpg";
 import Daniel from '../avatar/daniel.jpg';
-import Yuval from '../avatar/Yuval1.jpg'
+import Yuval from '../avatar/Yuval1.jpg';
+import Ale from '../avatar/alejandra.jpg'
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -112,6 +113,14 @@ export default function NavBar() {
         </ListItemAvatar>
         <Typography variant="h5">
           Panama Segura Sayuri
+        </Typography>
+      </ListItem>
+       <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar src={Ale}  sx={{ width: 100, height: 100 }}/>
+        </ListItemAvatar>
+        <Typography variant="h5">
+          Ramos Rivera Alejandra
         </Typography>
       </ListItem>
       </List>
