@@ -17,7 +17,7 @@ import  Sayuri from '../avatar/say.jpg';
 import Joshep from "../avatar/joshep.jpg";
 import Daniel from '../avatar/daniel.jpg';
 import Yuval from '../avatar/Yuval1.jpg';
-import Ale from '../avatar/alejandra.jpg'
+import Ale from '../avatar/alejanda.jpg'
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
