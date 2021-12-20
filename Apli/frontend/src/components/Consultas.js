@@ -170,6 +170,13 @@ const data = await response.json()
 console.log(data)
 SetConsulta6(data.Consulta6)
 }
+const loadConsulta7 =async()=>{
+
+  const response = await fetch('http://localhost:4000/consulta7')
+  const data = await response.json()
+  console.log(data)
+  SetConsulta7(data.Consulta7)
+  }
 const loadConsulta8 =async()=>{
   
   const response = await fetch('http://localhost:4000/consulta8')
@@ -240,6 +247,7 @@ const loadConsulta16 =async()=>{
     loadConsulta4()
     loadConsulta5()
     loadConsulta6()
+    loadConsulta7()
     loadConsulta8()
     loadConsulta9()
     loadConsulta10()
@@ -308,7 +316,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#fce4ec",
       }}
     >
          
@@ -335,7 +343,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#ffebee",
           }}>
 
         {consulta2.map((get)=>(
@@ -359,7 +367,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#e0f7fa",
       }}
     >
         <CardContent
@@ -369,7 +377,7 @@ return(
           }}
         ><Typography variant="h5"> Consulta3 </Typography>
         <Typography variant="h6">
-        Ventas por tienda
+        Clientes que pertenecen a cada territorio
         </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -385,7 +393,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#e3f2fd",
           }}>
         {consulta3.map((get)=>(
           <div
@@ -394,7 +402,7 @@ return(
             }}
           >
             <Typography>Territorio:{get.Territorio}</Typography>
-            <Typography>Total de clientes:{get.TotalClientes}</Typography>
+            <Typography>Total de clientes:{get.Total_Clientes}</Typography>
           </div>
 
 
@@ -406,7 +414,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#f1f8e9",
       }}
     >
         <CardContent
@@ -416,7 +424,7 @@ return(
           }}
         ><Typography variant="h5"> Consulta4 </Typography>
         <Typography variant="h6">
-        Ventas por tienda
+        Oferta de llantas de montaña con un descuento del 40%
         </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -432,7 +440,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#e8f5e9",
           }}>
         {consulta4.map((get)=>(
           <div
@@ -440,12 +448,12 @@ return(
               color: "black",
             }}
           >
-            <Typography>Territorio:{get.SpecialOfferID}</Typography>
-            <Typography>Total de clientes:{get.Description}</Typography>
+            <Typography>Id:{get.SpecialOfferID}</Typography>
+            <Typography>Descripcion:{get.Description}</Typography>
             <Typography>Territorio:{get.DiscountPct}</Typography>
-            <Typography>Total de clientes:{get.Type}</Typography>
-            <Typography>Territorio:{get.Category}</Typography>
-            <Typography>Total de clientes:{get.StartDate}</Typography>
+            <Typography>Tipo:{get.Type}</Typography>
+            <Typography>Categoria:{get.Category}</Typography>
+            <Typography>Total de clientes#e0f2f1:{get.StartDate}</Typography>
             <Typography>Territorio:{get.EndDate}</Typography>
             <Typography>Total de clientes:{get.ModifiedDate}</Typography>
               </div>
@@ -459,7 +467,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#fff8e1",
       }}
     >
         <CardContent
@@ -469,7 +477,7 @@ return(
           }}
         ><Typography variant="h5"> Consulta 5 </Typography>
         <Typography variant="h6">
-        Ventas por tienda
+        Ordenes realizadas debidas a anuncio de revista
         </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -484,7 +492,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#fffde7",
           }}>
         {consulta5.map((get)=>(
           <div
@@ -504,7 +512,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#f3e5f5",
       }}
     >
         <CardContent
@@ -514,7 +522,7 @@ return(
           }}
         ><Typography variant="h5"> Consulta 6 </Typography>
         <Typography variant="h6">
-        Ventas por tienda
+        Ordenes hechas por cada representante de ventas
         </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -529,7 +537,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#e8eaf6",
           }}>
         {consulta6.map((get)=>(
           <div
@@ -548,7 +556,53 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#ffebee",
+      }}
+    >
+        <CardContent
+        style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        ><Typography variant="h5"> Consulta 7 </Typography>
+        <Typography variant="h6">
+        "HL Road Frame - Black, 58" a la oferta "Descuento por volumen 11 a 14"
+        </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+        <ExpandMore
+          expand={expanded7}
+          onClick={handleExpandClick7}
+        >
+    <ExpandMoreIcon />
+        </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded7} timeout="auto" unmountOnExit>
+        <CardContent
+         style={{
+            flexDirection: 'row-reverse',
+           backgroundColor:"#fce4ec",
+          }}>
+        {consulta7.map((get)=>(
+          <div
+            style={{
+              color: "black",
+            }}
+          >
+            <Typography>Representante de ventas: {get.SpecialOfferID}</Typography>
+            <Typography>Total de ordenes: {get.ProductoID}</Typography>
+            <Typography>Total de ordenes: {get.rowguid}</Typography>
+            <Typography>Total de ordenes: {get.ModifiedDate}</Typography>
+             </div>
+   ))}
+   </CardContent>
+      </Collapse>
+       </Card>
+
+       <Card
+       style={{
+        marginBottom: ".7rem",
+        backgroundColor: "#e1f5fe",
       }}
     >
         <CardContent
@@ -558,7 +612,7 @@ return(
           }}
         ><Typography variant="h5"> Consulta 8 </Typography>
         <Typography variant="h6">
-        Ventas por tienda
+        Total de venta por PersonID
         </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -573,7 +627,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#e0f7fa",
           }}>
         {consulta8.map((get)=>(
           <div
@@ -593,7 +647,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#e8f5e9",
       }}
     >
         <CardContent
@@ -618,7 +672,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#f9fbe7",
           }}>
         {consulta9.map((get)=>(
           <div
@@ -638,7 +692,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#fffde7",
       }}
     >
         <CardContent
@@ -648,7 +702,7 @@ return(
           }}
         ><Typography variant="h5"> Consulta 10 </Typography>
         <Typography variant="h6">
-        Ventas por tienda
+        Productos con ofertas en el territorio 5
         </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -663,7 +717,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#fff8e1",
           }}>
         {consulta10.map((get)=>(
           <div
@@ -683,7 +737,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#fce4ec",
       }}
     >
         <CardContent
@@ -708,7 +762,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#ffebee",
           }}>
         {consulta11.map((get)=>(
           <div
@@ -773,7 +827,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#e1f5fe",
       }}
     >
         <CardContent
@@ -798,7 +852,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#e3f2fd",
           }}>
         {consulta13.map((get)=>(
           <div
@@ -822,7 +876,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#f1f8e9",
       }}
     >
         <CardContent
@@ -847,7 +901,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#f9fbe7",
           }}>
         {consulta14.map((get)=>(
           <div
@@ -871,7 +925,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#fff3e0",
       }}
     >
         <CardContent
@@ -896,7 +950,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#fff8e1",
           }}>
         {consulta15.map((get)=>(
           <div

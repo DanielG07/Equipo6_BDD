@@ -158,7 +158,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#ffebee",
       }}
     > 
         <CardContent
@@ -183,7 +183,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#fce4ec",
           }}>
         {consulta18.map((get)=>(
           <div
@@ -209,7 +209,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#e1f5fe",
       }}
     > 
         <CardContent
@@ -234,7 +234,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#e0f7fa",
           }}>
         {consulta19.map((get)=>(
           <div
@@ -253,7 +253,7 @@ return(
        <Card
        style={{
         marginBottom: ".7rem",
-        backgroundColor: "#e8eaf6",
+        backgroundColor: "#f9fbe7",
       }}
     > 
         <CardContent
@@ -278,7 +278,7 @@ return(
         <CardContent
          style={{
             flexDirection: 'row-reverse',
-           backgroundColor:"#f3e5f5",
+           backgroundColor:"#f1f8e9",
           }}>
         {consulta20.map((get)=>(
           <div
